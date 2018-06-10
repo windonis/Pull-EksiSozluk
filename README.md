@@ -1,1 +1,1 @@
-# Powershell
+# Eksi Sozluk Entries 
