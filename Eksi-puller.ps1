@@ -22,8 +22,31 @@ function Get-Best
     )
     $site = "https://eksisozluk.com"
     $url = $site + $title
-    $best = (((Invoke-WebRequest -Uri $url).allElements | where class -eq "content").innerText)[0]
-    return $best
+    $html = Invoke-WebRequest -Uri $url
+    $entry = ($html.allelements | where "data-id")."outerText"[1]
+    $yazar = ($html.allelements | where "data-id")."data-author"[1]
+    $fav = ($html.allelements | where "data-id")."data-favorite-count"[1]
+    Write-Host
+    "
+    ----------------------------
+    ---------->Entry<-----------
+    -----------------------------
+
+
+    $entry
+
+
+    -----------------------------
+    ----------->Yazar<----------
+    ----------------------------
+
+    $yazar
+    
+    -----------------------------
+    ------->Favori Sayisi<-------
+    -----------------------------
+    $fav
+    "
 }
 function Start-Puller 
 {
