@@ -1,1 +1,2 @@
-# Eksi Sozluk Entries 
+# Ekşi Sözlük Gündemin Şükelaları
+
