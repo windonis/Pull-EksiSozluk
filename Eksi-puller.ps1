@@ -14,7 +14,7 @@ function Get-Titles
     (
         $page
     )    
-    $Titles = (Invoke-WebRequest -Uri https://eksisozluk.com/basliklar/m/populer?p=$page).links | foreach {$_.href}  | Where {$_ -match "a=popular"} | foreach {$_.Substring(0,$_.Length-10)} | foreach {$_ + '?a=nice'}
+    $Titles = (Invoke-WebRequest -Uri https://eksisozluk.com/basliklar/m/populer?p=$page).links | ForEach-Object {$_.href}  | Where-Object {$_ -match "a=popular"} | ForEach-Object {$_.Substring(0,$_.Length-10)} | ForEach-Object {$_ + '?a=nice'}
     return $Titles
 }
 
@@ -36,12 +36,20 @@ function Get-Best
     $html = Invoke-WebRequest -Uri $url
 
     #class filler
-    $best.topic = $title
-    $best.entry = ($html.allelements | where "data-id")."outerText"[1]
-    $best.yazar = ($html.allelements | where "data-id")."data-author"[1]
-    $best.fav = ($html.allelements | where "data-id")."data-favorite-count"[1]
-
+    $best.topic = $url
+    $best.entry = ($html.allelements | Where-Object "data-id")."outerText"[1]
+    $best.yazar = ($html.allelements | Where-Object "data-id")."data-author"[1]
+    $best.fav = ($html.allelements | Where-Object "data-id")."data-favorite-count"[1]
+    #output
     $best | Format-List
+    $input = read-host "Please any key to Continue"
+    switch ($input) {
+        Default {
+            Clear-Host
+            $best | Format-List
+        }
+    }
+
     
 }
 function Start-Puller 
@@ -53,11 +61,17 @@ function Start-Puller
        foreach ($title in $titles)
        {
            Write-Host $title -BackgroundColor red -ForegroundColor White 
+           Write-Host "
+                      ### ###
+                       ## ##
+                        # #
+                         #
+           "
            Get-Best -title $title
        }
     }
 
 }
 
-
+#run the script
 Start-Puller
