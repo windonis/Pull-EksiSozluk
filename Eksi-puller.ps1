@@ -1,3 +1,13 @@
+#Output Class
+class Best {
+    [string]$topic
+    [string]$yazar
+    [string]$entry
+    [string]$fav
+}
+#creating 
+$best = [best]::new()
+#finder
 function Get-Titles 
 {
     param 
@@ -20,33 +30,19 @@ function Get-Best
     (
         $title
     )
+
     $site = "https://eksisozluk.com"
     $url = $site + $title
-    $html = Invoke-WebRequest -Uri $url
-    $entry = ($html.allelements | where "data-id")."outerText"[1]
-    $yazar = ($html.allelements | where "data-id")."data-author"[1]
-    $fav = ($html.allelements | where "data-id")."data-favorite-count"[1]
-    Write-Host
-    "
-    ----------------------------
-    ---------->Entry<-----------
-    -----------------------------
+    $html = Invok-WebRequest -Uri $url
 
+    #class filler
+    $best.topic = $title
+    $best.entry = ($html.allelements | where "data-id")."outerText"[1]
+    $best.yazar = ($html.allelements | where "data-id")."data-author"[1]
+    $best.fav = ($html.allelements | where "data-id")."data-favorite-count"[1]
 
-    $entry
-
-
-    -----------------------------
-    ----------->Yazar<----------
-    ----------------------------
-
-    $yazar
+    $best | Format-List
     
-    -----------------------------
-    ------->Favori Sayisi<-------
-    -----------------------------
-    $fav
-    "
 }
 function Start-Puller 
 {
@@ -62,5 +58,6 @@ function Start-Puller
     }
 
 }
+
 
 Start-Puller
