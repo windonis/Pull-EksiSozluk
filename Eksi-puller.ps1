@@ -33,7 +33,7 @@ function Get-Best
 
     $site = "https://eksisozluk.com"
     $url = $site + $title
-    $html = Invok-WebRequest -Uri $url
+    $html = Invoke-WebRequest -Uri $url
 
     #class filler
     $best.topic = $title
